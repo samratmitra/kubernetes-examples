@@ -1,0 +1,28 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: node-app-deployment
+  namespace: node-app
+  labels:
+    app: node-app
+spec:
+  selector:
+    matchLabels:
+      app: node-app
+      tier: node-app-tier
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: node-app
+        tier: node-app-tier
+    spec:
+      containers:
+      - name: node-app-container
+        image: samratmitra/node-hello
+        ports:
+          - name: http
+            containerPort: 80
+        envFrom:
+          - configMapRef:
+              name: node-app-config
